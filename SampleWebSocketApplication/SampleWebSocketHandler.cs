@@ -63,6 +63,8 @@ namespace SampleWebSocketApplication
 
         /// <summary>
         /// This is our callback for handling websocket connections
+        /// This is based largely on Paul Batum's example here:
+        /// http://paulbatum.github.io/WebSocket-Samples/AspNetWebSocketEcho/
         /// </summary>
         private async Task HandleWebSocket(AspNetWebSocketContext webSocketContext)
         {
