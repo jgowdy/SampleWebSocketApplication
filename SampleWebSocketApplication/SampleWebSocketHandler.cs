@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Net.WebSockets;
@@ -72,7 +71,7 @@ namespace SampleWebSocketApplication
             var fullArraySegment = new ArraySegment<byte>(receiveBuffer);
 
             //Simulate server side events with this 10 second heartbeat timer
-            var timer = SetupHeartbeatTimer(webSocketContext,TimeSpan.FromSeconds(10));
+            var timer = SetupHeartbeatTimer(webSocketContext, TimeSpan.FromSeconds(10));
 
             try
             {
@@ -84,26 +83,26 @@ namespace SampleWebSocketApplication
                     //Switch on websocket message type
                     switch (receiveResult.MessageType)
                     {
-                            //Client requested socket close
+                        //Client requested socket close
                         case WebSocketMessageType.Close:
                             await
                                 socket.CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty,
                                     CancellationToken.None);
                             break;
 
-                            //We don't support binary frames/messages (although we could if we wanted to)
+                        //We don't support binary frames/messages (although we could if we wanted to)
                         case WebSocketMessageType.Binary:
                             await
                                 socket.CloseAsync(WebSocketCloseStatus.InvalidMessageType, "Binary frames not supported",
                                     CancellationToken.None);
                             break;
 
-                            //Text frames/messages are what we're most interested in
+                        //Text frames/messages are what we're most interested in
                         case WebSocketMessageType.Text:
                             await HandleTextMessage(webSocketContext, receiveResult, socket, receiveBuffer);
                             break;
 
-                            //This should never happen, but if it does, handle it gracefully
+                        //This should never happen, but if it does, handle it gracefully
                         default:
                             await
                                 socket.CloseAsync(WebSocketCloseStatus.InvalidMessageType, "Unknown message type",
@@ -124,7 +123,7 @@ namespace SampleWebSocketApplication
         /// <summary>
         /// This function sets up a timer at the specified interval that will transmit "HEARTBEAT" to the client
         /// </summary>
-        private Timer SetupHeartbeatTimer(AspNetWebSocketContext webSocketContext,TimeSpan interval)
+        private Timer SetupHeartbeatTimer(AspNetWebSocketContext webSocketContext, TimeSpan interval)
         {
             var fullHeartbeatSegment = new ArraySegment<byte>(HeartbeatMessageBytes);
             var socket = webSocketContext.WebSocket;
@@ -138,7 +137,7 @@ namespace SampleWebSocketApplication
                 }
                 catch (Exception e)
                 {
-                    Trace.WriteLine("Exception in timer: "+e.Message);
+                    Trace.WriteLine("Exception in timer: " + e.Message);
                 }
             }, null, TimeSpan.FromSeconds(1), interval);
         }
